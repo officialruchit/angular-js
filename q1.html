@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Authentication</title>
+</head>
+<body>
+  <h1>Login Page</h1>
+  <label for="username">Username: </label>
+  <input type="text" id="username"><br><br>
+  <label for="password">Password: </label>
+  <input type="password" id="password"><br><br>
+  <button onclick="authenticate()">Login</button>
+
+  <script>
+    // Array to store login IDs and passwords
+    const users = [
+      { username: 'user1', password: 'password1' },
+      { username: 'user2', password: 'password2' },
+      // Add more users as needed
+    ];
+
+    function authenticate() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      // Check if the provided username and password match any user
+      const authenticatedUser = users.find(user => user.username === username && user.password === password);
+
+      if (authenticatedUser) {
+        alert('Login successful!');
+      } else {
+        alert('Invalid login credentials. Please try again.');
+      }
+    }
+  </script>
+</body>
+</html>
