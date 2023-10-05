@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+  <title>AngularJS Arithmetic Operations</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="ArithmeticController">
+  <h1>Arithmetic Operations</h1>
+
+  <label for="operand1">Operand 1:</label>
+  <input type="number" id="operand1" ng-model="operand1"><br>
+
+  <label for="operator">Operator:</label>
+  <select id="operator" ng-model="operator">
+    <option value="+">+</option>
+    <option value="-">-</option>
+    <option value="*">*</option>
+    <option value="/">/</option>
+  </select><br>
+
+  <label for="operand2">Operand 2:</label>
+  <input type="number" id="operand2" ng-model="operand2"><br>
+
+  <button ng-click="performOperation()">Calculate</button>
+
+  <h2>Result:</h2>
+  <p>{{ result }}</p>
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('ArithmeticController', function($scope) {
+  $scope.operand1 = 0;
+  $scope.operand2 = 0;
+  $scope.operator = '+';
+  $scope.result = 0;
+
+  $scope.performOperation = function() {
+    switch ($scope.operator) {
+      case '+':
+        $scope.result = $scope.operand1 + $scope.operand2;
+        break;
+      case '-':
+        $scope.result = $scope.operand1 - $scope.operand2;
+        break;
+      case '*':
+        $scope.result = $scope.operand1 * $scope.operand2;
+        break;
+      case '/':
+        if ($scope.operand2 !== 0) {
+          $scope.result = $scope.operand1 / $scope.operand2;
+        } else {
+          $scope.result = 'Cannot divide by zero';
+        }
+        break;
+      default:
+        $scope.result = 'Invalid operator';
+    }
+  };
+});
+</script>
+
+</body>
+</html>

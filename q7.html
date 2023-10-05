@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+  <title>Subject List and Search</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="SubjectController" ng-init="initializeSubjects()">
+  <h1>Subject List and Search</h1>
+
+  <label for="subjectIndex">Enter subject index:</label>
+  <input type="number" id="subjectIndex" ng-model="searchIndex" min="0" max="{{ subjects.length - 1 }}"><br>
+
+  <button ng-click="searchSubject()">Search</button>
+
+  <h2>Subject List:</h2>
+  <ul>
+    <li ng-repeat="subject in subjects">{{ $index }}: {{ subject }}</li>
+  </ul>
+
+  <h2>Search Result:</h2>
+  <p>{{ searchResult }}</p>
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('SubjectController', function($scope) {
+  $scope.subjects = [];
+
+  $scope.initializeSubjects = function() {
+    // Initialize subjects
+    $scope.subjects = ['Math', 'Science', 'History', 'English'];
+  };
+
+  $scope.searchSubject = function() {
+    if ($scope.searchIndex >= 0 && $scope.searchIndex < $scope.subjects.length) {
+      $scope.searchResult = 'Subject at index ' + $scope.searchIndex + ': ' + $scope.subjects[$scope.searchIndex];
+    } else {
+      $scope.searchResult = 'Invalid subject index.';
+    }
+  };
+});
+</script>
+
+</body>
+</html>

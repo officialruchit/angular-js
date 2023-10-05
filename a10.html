@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html ng-app="appModule">
+<head>
+  <title>Student Application</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script >
+var appModule = angular.module('appModule', []);
+appModule.factory('Student', function() {
+  function Student(sName, sID, course, age) {
+    this.sName = sName;
+    this.sID = sID;
+    this.course = course;
+    this.age = age;
+    this.marks = {
+      subject1: null,
+      subject2: null,
+      subject3: null
+    };
+    this.total = null;
+    this.percentage = null;
+    this.grade = null;
+  }
+  return Student;
+});
+
+
+
+appModule.controller('StudentController', ['$scope', 'Student', function($scope, Student) {
+  $scope.students = [];
+  $scope.selectedStudentID = null;
+
+  $scope.addStudent = function() {
+    var student = new Student($scope.sName, $scope.sID, $scope.course, $scope.age);
+    $scope.students.push(student);
+    $scope.clearFields();
+  };
+
+  $scope.calculateResult = function(student) {
+    student.total = student.marks.subject1 + student.marks.subject2 + student.marks.subject3;
+    student.percentage = (student.total / 300) * 100;
+    if (student.percentage >= 90) student.grade = 'AA';
+    else if (student.percentage >= 80) student.grade = 'AB';
+    else if (student.percentage >= 70) student.grade = 'BB';
+    else if (student.percentage >= 60) student.grade = 'BC';
+    else if (student.percentage >= 50) student.grade = 'CC';
+    else if (student.percentage >= 40) student.grade = 'CD';
+    else if (student.percentage >= 30) student.grade = 'DD';
+    else student.grade = 'FF';
+  };
+
+  $scope.displayResult = function() {
+    if ($scope.selectedStudentID !== null) {
+      var student = $scope.students[$scope.selectedStudentID];
+      $scope.calculateResult(student);
+    }
+  };
+
+  $scope.clearFields = function() {
+    $scope.sName = '';
+    $scope.sID = '';
+    $scope.course = '';
+    $scope.age = '';
+    $scope.marks = {
+      subject1: null,
+      subject2: null,
+      subject3: null
+    };
+  };
+}]);
+
+
+
+
+
+  </script>
+</head>
+<body>
+
+<div ng-controller="StudentController">
+  <h1>Student Information and Results</h1>
+
+  <label for="sName">Student Name:</label>
+  <input type="text" id="sName" ng-model="sName"><br>
+
+  <label for="sID">Student ID:</label>
+  <input type="text" id="sID" ng-model="sID"><br>
+
+  <label for="course">Course:</label>
+  <input type="text" id="course" ng-model="course"><br>
+
+  <label for="age">Age:</label>
+  <input type="text" id="age" ng-model="age"><br>
+
+  <label for="subject1">Subject 1 Marks:</label>
+  <input type="number" id="subject1" ng-model="marks.subject1"><br>
+
+  <label for="subject2">Subject 2 Marks:</label>
+  <input type="number" id="subject2" ng-model="marks.subject2"><br>
+
+  <label for="subject3">Subject 3 Marks:</label>
+  <input type="number" id="subject3" ng-model="marks.subject3"><br>
+
+  <button ng-click="addStudent()">Add Student</button>
+  <button ng-click="displayResult()">Display Result</button>
+
+  <h2>Student List:</h2>
+  <ul>
+    <li ng-repeat="student in students">
+      {{ student.sName }} (ID: {{ student.sID }}, Course: {{ student.course }}, Age: {{ student.age }})
+      <span ng-show="student.marks.subject1 !== null">Subject 1 Marks: {{ student.marks.subject1 }}</span>
+      <span ng-show="student.marks.subject2 !== null">Subject 2 Marks: {{ student.marks.subject2 }}</span>
+      <span ng-show="student.marks.subject3 !== null">Subject 3 Marks: {{ student.marks.subject3 }}</span>
+      <span ng-show="student.marks.subject1 !== null && student.marks.subject2 !== null && student.marks.subject3 !== null">
+        Total Marks: {{ student.total }}, Percentage: {{ student.percentage }}%, Grade: {{ student.grade }}
+      </span>
+    </li>
+  </ul>
+
+  <label for="selectedStudent">Select Student ID:</label>
+  <select id="selectedStudent" ng-model="selectedStudentID">
+    <option value="" disabled selected>Select Student ID</option>
+    <option ng-repeat="student in students" value="{{ $index }}">{{ student.sID }}</option>
+  </select>
+</div>
+
+</body>
+</html>

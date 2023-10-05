@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html ng-app="currencyConverterApp">
+<head>
+  <title>Currency Converter</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="CurrencyConverterController">
+  <h1>Currency Converter</h1>
+
+  <label for="fromCurrency">From Currency:</label>
+  <select id="fromCurrency" ng-model="fromCurrency" ng-options="currency for currency in currencies">
+  </select><br>
+
+  <label for="toCurrency">To Currency:</label>
+  <select id="toCurrency" ng-model="toCurrency" ng-options="currency for currency in currencies">
+  </select><br>
+
+  <label for="amount">Amount:</label>
+  <input type="number" id="amount" ng-model="amount" min="0"><br>
+
+  <button ng-click="convert()">Convert</button>
+
+  <h2>Result:</h2>
+  <p>{{ result }}</p>
+</div>
+
+<script>
+var app = angular.module('currencyConverterApp', []);
+app.controller('CurrencyConverterController', function($scope) {
+  $scope.currencies = ['USD', 'EUR', 'GBP', 'JPY'];  // List of supported currencies
+  $scope.fromCurrency = 'USD';
+  $scope.toCurrency = 'EUR';
+  $scope.amount = 1;
+  
+  // Exchange rates (for simplicity, you might fetch these from an API)
+  var exchangeRates = {
+    USD: { EUR: 0.85, GBP: 0.73, JPY: 113.42 },
+    EUR: { USD: 1.18, GBP: 0.85, JPY: 130.70 },
+    GBP: { USD: 1.38, EUR: 1.17, JPY: 153.69 },
+    JPY: { USD: 0.009, EUR: 0.0076, GBP: 0.0065 }
+  };
+
+  $scope.convert = function() {
+    if ($scope.fromCurrency === $scope.toCurrency) {
+      $scope.result = $scope.amount;
+    } else if (exchangeRates[$scope.fromCurrency] && exchangeRates[$scope.fromCurrency][$scope.toCurrency]) {
+      $scope.result = $scope.amount * exchangeRates[$scope.fromCurrency][$scope.toCurrency];
+    } else {
+      $scope.result = 'Conversion not supported.';
+    }
+  };
+});
+</script>
+
+</body>
+</html>

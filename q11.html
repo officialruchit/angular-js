@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html ng-app="appModule">
+<head>
+  <title>Product Information</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script >
+
+var appModule = angular.module('appModule', []);
+
+
+
+appModule.factory('Product', function() {
+  function Product(productID, productName, productCategory, productDescription, manufactureDate, price, image) {
+    this.productID = productID;
+    this.productName = productName;
+    this.productCategory = productCategory;
+    this.productDescription = productDescription;
+    this.manufactureDate = manufactureDate;
+    this.price = price;
+    this.image = image;
+    this.quantity = 0;
+    this.totalPrice = 0;
+  }
+  return Product;
+});
+
+
+appModule.controller('ProductController', ['$scope', 'Product', function($scope, Product) {
+  $scope.products = [];
+
+  $scope.addProduct = function() {
+    var product = new Product($scope.productID, $scope.productName, $scope.productCategory, $scope.productDescription, $scope.manufactureDate, $scope.price, $scope.image);
+    $scope.products.push(product);
+    $scope.clearFields();
+  };
+
+  $scope.calculateTotalPrice = function(product) {
+    product.totalPrice = product.quantity * product.price;
+  };
+
+  $scope.addToCart = function(product) {
+    // Implement adding to cart functionality here
+    console.log('Added to cart:', product);
+  };
+
+  $scope.clearFields = function() {
+    $scope.productID = '';
+    $scope.productName = '';
+    $scope.productCategory = '';
+    $scope.productDescription = '';
+    $scope.manufactureDate = '';
+    $scope.price = '';
+    $scope.image = '';
+    $scope.quantity = '';
+  };
+}]);
+
+
+
+  </script>
+</head>
+<body>
+
+<div ng-controller="ProductController">
+  <h1>Product Information</h1>
+
+  <label for="productID">Product ID:</label>
+  <input type="text" id="productID" ng-model="productID"><br>
+
+  <label for="productName">Product Name:</label>
+  <input type="text" id="productName" ng-model="productName"><br>
+
+  <label for="productCategory">Product Category:</label>
+  <input type="text" id="productCategory" ng-model="productCategory"><br>
+
+  <label for="productDescription">Product Description:</label>
+  <textarea id="productDescription" ng-model="productDescription"></textarea><br>
+
+  <label for="manufactureDate">Manufacture Date:</label>
+  <input type="text" id="manufactureDate" ng-model="manufactureDate"><br>
+
+  <label for="price">Price:</label>
+  <input type="number" id="price" ng-model="price" step="0.01"><br>
+
+  <label for="image">Product Image URL:</label>
+  <input type="text" id="image" ng-model="image"><br>
+
+  <label for="quantity">Quantity:</label>
+  <input type="number" id="quantity" ng-model="quantity" min="0" ng-change="calculateTotalPrice(product)"><br>
+
+  <button ng-click="addProduct()">Add Product</button>
+
+  <h2>Product Details:</h2>
+  <ul>
+    <li ng-repeat="product in products">
+      Product ID: {{ product.productID }}<br>
+      Product Name: {{ product.productName }}<br>
+      <img src="{{ product.image }}" alt="Product Image" width="100"><br>
+      <button ng-click="addToCart(product)">Add to Cart</button><br>
+      <button ng-click="showDetails = !showDetails">View Details</button>
+      <div ng-show="showDetails">
+        Category: {{ product.productCategory }}<br>
+        Description: {{ product.productDescription }}<br>
+        Manufacture Date: {{ product.manufactureDate }}<br>
+        Price: ${{ product.price }}<br>
+        Quantity: <input type="number" ng-model="product.quantity" min="0" ng-change="calculateTotalPrice(product)"><br>
+        Total Price: ${{ product.totalPrice }}<br><br>
+      </div>
+    </li>
+  </ul>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html ng-app="appModule">
+<head>
+  <title>Message Display</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script >
+var appModule = angular.module('appModule', []);
+var controllerModule = angular.module('controllerModule', []);
+controllerModule.controller('MessageController', ['$scope', function($scope) {
+  $scope.message = 'Hello, this is a message from the controller!';
+}]);
+
+
+
+
+  </script>
+</head>
+<body>
+
+<div ng-controller="MessageController">
+  <h1>Message Display</h1>
+  <p>{{ message }}</p>
+</div>
+
+</body>
+</html>

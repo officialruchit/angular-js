@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+  <title>Bill Calculator</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="BillController">
+  <h1>Bill Calculator</h1>
+
+  <label for="item">Select an item:</label>
+  <select id="item" ng-model="selectedItem" ng-options="item.name for item in items">
+  </select><br>
+
+  <label for="quantity">Enter quantity:</label>
+  <input type="number" id="quantity" ng-model="quantity" min="1"><br>
+
+  <button ng-click="calculateTotal()">Calculate Total</button>
+
+  <h2>Total Bill:</h2>
+  <p>{{ totalBill | currency }}</p>
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('BillController', function($scope) {
+  $scope.items = [
+    { name: 'shirt', price: 10 },
+    { name: 'car', price: 15 },
+    { name: 'Bike', price: 20 }
+  ];
+  $scope.selectedItem = $scope.items[0];
+  $scope.quantity = 1;
+  $scope.totalBill = 0;
+
+  $scope.calculateTotal = function() {
+    $scope.totalBill = $scope.selectedItem.price * $scope.quantity;
+  };
+});
+</script>
+
+</body>
+</html>

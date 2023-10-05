@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+  <title>Message Styling App</title>
+  <style>
+    .user-message {
+      padding: 10px;
+      border: 1px solid #ccc;
+      display: inline-block;
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="MessageController">
+  <h1>Message Styling App</h1>
+
+  <label for="message">Enter your message:</label>
+  <textarea id="message" ng-model="userMessage" rows="4" cols="50"></textarea><br>
+
+  <label for="backgroundColor">Background Color:</label>
+  <input type="color" id="backgroundColor" ng-model="messageStyle.backgroundColor"><br>
+
+  <label for="textColor">Text Color:</label>
+  <input type="color" id="textColor" ng-model="messageStyle.color"><br>
+
+  <button ng-click="updateMessageStyle()">Update Style</button>
+
+  <h2>Your Customized Message:</h2>
+  <div class="user-message" ng-style="messageStyle">{{ userMessage }}</div>
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('MessageController', function($scope) {
+  $scope.userMessage = '';
+  $scope.messageStyle = {
+    backgroundColor: '#ffffff',
+    color: '#000000'
+  };
+
+  $scope.updateMessageStyle = function() {
+    // Update message style based on user input
+    $scope.messageStyle = {
+      backgroundColor: $scope.messageStyle.backgroundColor,
+      color: $scope.messageStyle.color
+    };
+  };
+});
+</script>
+
+</body>
+</html>

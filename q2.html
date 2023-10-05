@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Management Form</title>
+</head>
+<body>
+  <h1>User Management Form</h1>
+
+  <form id="userForm">
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name"><br>
+
+    <label for="email">Email:</label><br>
+    <input type="text" id="email" name="email"><br><br>
+
+    <button type="button" onclick="addUser()">Add User</button>
+    <button type="button" onclick="updateUser()">Update User</button>
+    <button type="button" onclick="deleteUser()">Delete User</button>
+  </form>
+
+  <h2>User Details</h2>
+  <ul id="userDetails"></ul>
+
+  <script>
+    let users = [];
+
+    function addUser() {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+
+      users.push({ name, email });
+      displayUserDetails();
+      clearForm();
+    }
+
+    function updateUser() {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+
+      const userIndex = users.findIndex(user => user.name === name);
+
+      if (userIndex !== -1) {
+        users[userIndex].email = email;
+        displayUserDetails();
+        clearForm();
+      } else {
+        alert('User not found.');
+      }
+    }
+
+    function deleteUser() {
+      const name = document.getElementById('name').value;
+
+      users = users.filter(user => user.name !== name);
+
+      displayUserDetails();
+      clearForm();
+    }
+
+    function displayUserDetails() {
+      const userDetailsElement = document.getElementById('userDetails');
+      userDetailsElement.innerHTML = '';
+
+      for (const user of users) {
+        const listItem = document.createElement('li');
+        listItem.innerText = `Name: ${user.name}, Email: ${user.email}`;
+        userDetailsElement.appendChild(listItem);
+      }
+    }
+
+    function clearForm() {
+      document.getElementById('name').value = '';
+      document.getElementById('email').value = '';
+    }
+  </script>
+</body>
+</html>
